@@ -1,3 +1,43 @@
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+
+mongoose.connect(`mongodb://localhost:27017/optiondata`, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'Error while connecting to database'));
+db.once('open', function () {
+	console.log('Db connected successfully')
+});
+
+const stockDataSchema = new Schema({
+	Exchange: { type: String },
+	InstrumentIdentifier: { type: String },
+	LastTradeTime: { type: Number },
+	ServerTime: { type: Number },
+	AverageTradedPrice: { type: Number },
+	BuyPrice: { type: Number },
+	BuyQty: { type: Number },
+	Close: { type: Number },
+	High: { type: Number },
+	Low: { type: Number },
+	LastTradePrice: { type: Number },
+	LastTradeQty: { type: Number },
+	Open: { type: Number },
+	OpenInterest: { type: Number },
+	QuotationLot: { type: Number },
+	SellPrice: { type: Number },
+	SellQty: { type: Number },
+	TotalQtyTraded: { type: Number },
+	Value: { type: Number },
+	PreOpen: false,
+	PriceChange: { type: Number },
+	PriceChangePercentage: { type: Number },
+	OpenInterestChange: { type: Number },
+	MessageType: { type: String }
+})
+
+StockData = mongoose.model('StockData', stockDataSchema)
+
 var websocketClient = require('websocket').client;
 var client = new websocketClient();
 var count = 0;
@@ -7,8 +47,6 @@ var endpoint = "ws://nimblewebstream.lisuns.com:4575/";
 
 var accesskey = "bdc342f4-44a6-4a0c-b96d-c8eb0e584a57";
 var output;
-
-
 client.on('connectFailed', function (error) {
 	console.log('Connection Error: ' + error.toString());
 });
@@ -35,8 +73,8 @@ client.on('connect', function (connection) {
 			writeToScreen(message);
 			if (callDone == false) {
 				setInterval(first, 10000);
-				setInterval(second, 60000);
-				setInterval(third, 900000);
+				//setInterval(second, 6000);
+				//setInterval(third, 900000);
 
 				callDone = true;
 			}
@@ -68,8 +106,8 @@ client.on('connect', function (connection) {
 			callAPI(strMessage);
 		}
 	}
-	function functionCall1() {	
-		GetLastQuoteOptionChain1();							
+	function functionCall1() {
+		GetLastQuoteOptionChain1();
 	}
 	function functionCall2() {
 		GetLastQuoteOptionChain2();
@@ -78,22 +116,14 @@ client.on('connect', function (connection) {
 		GetLastQuoteOptionChain3();
 	}
 	functionCall1();
-	functionCall2();
-	functionCall3();
-	
+	//functionCall2();
+	//functionCall3();
+
 	function GetLastQuoteOptionChain1() {
 
-
 		if (connection.connected) {
 			var ExchangeName = "NFO";
-			var Product = "NIFTY";
-			request = '{"MessageType":"GetLastQuoteOptionChain","Exchange":"' + ExchangeName + '","Product":"' + Product + '"}';
-			callAPI(request);
-		}
-
-		if (connection.connected) {
-			var ExchangeName = "NFO";
-			var Product = "BANKNIFTY";
+			var Product = "ACC";
 			request = '{"MessageType":"GetLastQuoteOptionChain","Exchange":"' + ExchangeName + '","Product":"' + Product + '"}';
 			callAPI(request);
 		}
@@ -170,7 +200,6 @@ client.on('connect', function (connection) {
 			request = '{"MessageType":"GetLastQuoteOptionChain","Exchange":"' + ExchangeName + '","Product":"' + Product + '"}';
 			callAPI(request);
 		}
-
 		if (connection.connected) {
 			var ExchangeName = "NFO";
 			var Product = "AUROPHARMA";
@@ -222,7 +251,6 @@ client.on('connect', function (connection) {
 			callAPI(request);
 		}
 
-
 		if (connection.connected) {
 			var ExchangeName = "NFO";
 			var Product = "BATAINDIA";
@@ -271,7 +299,6 @@ client.on('connect', function (connection) {
 			request = '{"MessageType":"GetLastQuoteOptionChain","Exchange":"' + ExchangeName + '","Product":"' + Product + '"}';
 			callAPI(request);
 		}
-
 		if (connection.connected) {
 			var ExchangeName = "NFO";
 			var Product = "BOSCHLTD";
@@ -376,7 +403,6 @@ client.on('connect', function (connection) {
 			request = '{"MessageType":"GetLastQuoteOptionChain","Exchange":"' + ExchangeName + '","Product":"' + Product + '"}';
 			callAPI(request);
 		}
-
 		if (connection.connected) {
 			var ExchangeName = "NFO";
 			var Product = "DRREDDY";
@@ -480,7 +506,6 @@ client.on('connect', function (connection) {
 			request = '{"MessageType":"GetLastQuoteOptionChain","Exchange":"' + ExchangeName + '","Product":"' + Product + '"}';
 			callAPI(request);
 		}
-
 		if (connection.connected) {
 			var ExchangeName = "NFO";
 			var Product = "HDFCLIFE";
@@ -670,6 +695,7 @@ client.on('connect', function (connection) {
 			request = '{"MessageType":"GetLastQuoteOptionChain","Exchange":"' + ExchangeName + '","Product":"' + Product + '"}';
 			callAPI(request);
 		}
+		//////////////////////////////////////////////////////////////////////////
 
 		if (connection.connected) {
 			var ExchangeName = "NFO";
@@ -783,7 +809,6 @@ client.on('connect', function (connection) {
 			request = '{"MessageType":"GetLastQuoteOptionChain","Exchange":"' + ExchangeName + '","Product":"' + Product + '"}';
 			callAPI(request);
 		}
-
 		if (connection.connected) {
 			var ExchangeName = "NFO";
 			var Product = "PAGEIND";
@@ -888,7 +913,6 @@ client.on('connect', function (connection) {
 			request = '{"MessageType":"GetLastQuoteOptionChain","Exchange":"' + ExchangeName + '","Product":"' + Product + '"}';
 			callAPI(request);
 		}
-
 		if (connection.connected) {
 			var ExchangeName = "NFO";
 			var Product = "SHREECEM";
@@ -993,7 +1017,6 @@ client.on('connect', function (connection) {
 			request = '{"MessageType":"GetLastQuoteOptionChain","Exchange":"' + ExchangeName + '","Product":"' + Product + '"}';
 			callAPI(request);
 		}
-
 		if (connection.connected) {
 			var ExchangeName = "NFO";
 			var Product = "TORNTPOWER";
@@ -1060,8 +1083,90 @@ client.on('connect', function (connection) {
 	}
 });
 function writeToScreen(message) {
-	console.log(message.utf8Data);
+	// console.log(message.utf8Data);
+
+	var message_utf8Data = JSON.parse(message.utf8Data);
+	console.log(message_utf8Data.MessageType);
+	if (message_utf8Data != undefined && message_utf8Data != null && message_utf8Data && message_utf8Data.Result != undefined && message_utf8Data.Result != null && message_utf8Data.Result) {
+		console.log("if(message_utf8Data != undefined && message_utf8Data != null && message_utf8Data && message_utf8Data.Result != undefined && message_utf8Data.Result != null && message_utf8Data.Result){")
+		message_utf8Data.Result.forEach(result => {
+			console.log("result.InstrumentIdentifier");
+			// console.log(result.InstrumentIdentifier);
+
+			StockData.findOne({ InstrumentIdentifier: result.InstrumentIdentifier }).sort({}).then((stockDetail) => {
+				if (stockDetail) {
+					stockDetail.Exchange = result.Exchange;
+					stockDetail.InstrumentIdentifier = result.InstrumentIdentifier;
+					stockDetail.LastTradeTime = result.LastTradeTime;
+					stockDetail.ServerTime = result.ServerTime;
+					stockDetail.AverageTradedPrice = result.AverageTradedPrice;
+					stockDetail.BuyPrice = result.BuyPrice;
+					stockDetail.BuyQty = result.BuyQty;
+					stockDetail.Close = result.Close;
+					stockDetail.High = result.High;
+					stockDetail.Low = result.Low;
+					stockDetail.LastTradePrice = result.LastTradePrice;
+					stockDetail.LastTradeQty = result.LastTradeQty;
+					stockDetail.Open = result.Open;
+					stockDetail.OpenInterest = result.OpenInterest;
+					stockDetail.QuotationLot = result.QuotationLot;
+					stockDetail.SellPrice = result.SellPrice;
+					stockDetail.SellQty = result.SellQty;
+					stockDetail.TotalQtyTraded = result.TotalQtyTraded;
+					stockDetail.Value = result.Value;
+					stockDetail.PreOpen = result.PreOpen;
+					stockDetail.PriceChange = result.PriceChange;
+					stockDetail.PriceChangePercentage = result.PriceChangePercentage;
+					stockDetail.OpenInterestChange = result.OpenInterestChange;
+					stockDetail.MessageType = result.MessageType;
+					stockDetail.save().then(() => {
+						console.log("updated Successfully");
+					}, (error) => {
+						console.log(error)
+					});
+
+				} else {
+					var newStockDetail = new StockData({
+						Exchange: result.Exchange,
+						InstrumentIdentifier: result.InstrumentIdentifier,
+						LastTradeTime: result.LastTradeTime,
+						ServerTime: result.ServerTime,
+						AverageTradedPrice: result.AverageTradedPrice,
+						BuyPrice: result.BuyPrice,
+						BuyQty: result.BuyQty,
+						Close: result.Close,
+						High: result.High,
+						Low: result.Low,
+						LastTradePrice: result.LastTradePrice,
+						LastTradeQty: result.LastTradeQty,
+						Open: result.Open,
+						OpenInterest: result.OpenInterest,
+						QuotationLot: result.QuotationLot,
+						SellPrice: result.SellPrice,
+						SellQty: result.SellQty,
+						TotalQtyTraded: result.TotalQtyTraded,
+						Value: result.Value,
+						PreOpen: result.PreOpen,
+						PriceChange: result.PriceChange,
+						PriceChangePercentage: result.PriceChangePercentage,
+						OpenInterestChange: result.OpenInterestChange,
+						MessageType: result.MessageType,
+					});
+
+					newStockDetail.save().then(() => {
+						console.log("updated Successfully");
+					}, (error) => {
+						console.log(error)
+					});
+
+				}
+			}, (error) => {
+				console.log(error)
+			});
+		});
+	}
 }
 
 
 client.connect(endpoint);
+
